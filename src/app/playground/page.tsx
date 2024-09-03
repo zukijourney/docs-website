@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronRight, Image as ImageIcon, MessageSquare, Send, Sparkles, Lock, Unlock, Search, RefreshCw } from 'lucide-react'
+import { stringify } from 'querystring'
 
 const defaultApiBase = 'https://api.zukijourney.com/v1'
 const defaultImageModel = 'flux-schnell'
@@ -50,29 +51,61 @@ export default function Component() {
     }
   }, [])
 
+  const normalizeModelData = (models: any[]): Model[] => {
+    return models.map(model => {
+      const idKeywords = ['gpt', 'claude', 'mistral', 'gemini', 'deepseek', 'llama','gemma','mixtral','yi-','ERNIE', 'command-r'];
+      let modelType = 'image';
+      let isFree = true;
+
+      if (idKeywords.some(keyword => model.id.toLowerCase().includes(keyword))) {
+        modelType = 'chat';
+      }
+
+      if (model.type) {
+        modelType = model.type.includes('chat') ? 'chat' : 'image';
+      }
+
+      if (typeof model.is_free !== 'undefined') {
+        isFree = model.is_free;
+      }
+
+      return {
+        id: model.id,
+        type: modelType,
+        is_free: isFree,
+        endpoint: model.endpoint || '/v1/chat/completions',
+      };
+    });
+  };
+
   const fetchModels = useCallback(async () => {
     try {
-      setError('')
-      const response = await fetch(`${apiBase}/models`)
+      setError('');
+      setLoading(true);
+      const response = await fetch(`${apiBase}/models`);
       if (!response.ok) {
-        throw new Error('Failed to fetch models')
+        throw new Error('Failed to fetch models');
       }
-      const data = await response.json()
-      setModels(data.data)
-      setFilteredModels(data.data)
-      if (data.data.length > 0) {
-        const defaultModel = endpoint === 'image' 
-          ? data.data.find((m: Model) => m.id === defaultImageModel) || data.data[0]
-          : data.data[0]
-        setModel(defaultModel.id)
+      const data = await response.json();
+      if (!data.data || !Array.isArray(data.data)) {
+        throw new Error('Invalid model data received');
+      }
+      const normalizedModels = normalizeModelData(data.data);
+      setModels(normalizedModels);
+      setFilteredModels(normalizedModels);
+      if (normalizedModels.length > 0) {
+        const defaultModel = normalizedModels.find(m => m.type === (endpoint === 'chat' ? 'chat' : 'image'));
+        setModel(defaultModel ? defaultModel.id : normalizedModels[0].id);
       }
     } catch (error) {
-      console.error('Error fetching models:', error)
-      setError('Failed to fetch models. Please check your API Base URL.')
-      setModels([])
-      setFilteredModels([])
+      console.error('Error fetching models:', error);
+      setError('Failed to fetch models. Please check your API Base URL.');
+      setModels([]);
+      setFilteredModels([]);
+    } finally {
+      setLoading(false);
     }
-  }, [apiBase, endpoint])
+  }, [apiBase, endpoint]);
 
   useEffect(() => {
     if (fetchModelsTimeoutRef.current) {
@@ -80,14 +113,14 @@ export default function Component() {
     }
     fetchModelsTimeoutRef.current = setTimeout(() => {
       fetchModels()
-    }, 1000) // 1 second delay
+    }, 1000)
 
     return () => {
       if (fetchModelsTimeoutRef.current) {
         clearTimeout(fetchModelsTimeoutRef.current)
       }
     }
-  }, [apiBase, fetchModels])
+  }, [apiBase, endpoint, fetchModels])
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -109,7 +142,7 @@ export default function Component() {
   const handleModelSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e.target.value.toLowerCase()
     setModelSearch(search)
-    setFilteredModels(models.filter(m => m.id.toLowerCase().includes(search)))
+    setFilteredModels(models.filter(m => m.id.toLowerCase().includes(search) || m.type.toLowerCase().includes(search)))
   }
 
   const sendRequest = async (messageToSend: Message): Promise<boolean> => {
@@ -148,7 +181,7 @@ export default function Component() {
       const data = await response.json()
       
       if (!response.ok) {
-        throw new Error(data.error?.message || 'An error occurred')
+        throw new Error(data.error?.message || stringify(data))
       }
 
       if (endpoint === 'chat') {
@@ -189,7 +222,6 @@ export default function Component() {
     setError('')
     const messageToRetry = messages[index - 1]
     
-    // Remove the error message and any subsequent messages
     setMessages(prev => prev.slice(0, index))
 
     const success = await sendRequest(messageToRetry)
@@ -270,7 +302,7 @@ export default function Component() {
                     </SelectTrigger>
                     <SelectContent>
                       {filteredModels
-                        .filter(m => m.type === 'chat.completions')
+                        .filter(m => m.type === 'chat')
                         .map(m => (
                           <SelectItem key={m.id} value={m.id}>
                             {m.id} {m.is_free ? '(Free)' : '(Paid)'}
@@ -297,7 +329,7 @@ export default function Component() {
                     </SelectTrigger>
                     <SelectContent>
                       {filteredModels
-                        .filter(m => m.type === 'images.generations')
+                        .filter(m => m.type === 'image')
                         .map(m => (
                           <SelectItem key={m.id} value={m.id}>
                             {m.id} {m.is_free ? '(Free)' : '(Paid)'}
