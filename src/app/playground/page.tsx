@@ -82,7 +82,12 @@ export default function Component() {
     try {
       setError('');
       setLoading(true);
-      const response = await fetch(`${apiBase}/models`);
+      const response = await fetch(`${apiBase}/models`, {
+        
+        headers: {
+          'Authorization': `Bearer ${apiKey}`
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch models');
       }
