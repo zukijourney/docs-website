@@ -12,6 +12,7 @@ import { Moon, Sun, Code, Zap, Gift, Key, ExternalLink, MessageSquare, BookOpen,
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Link from 'next/link';
+import Head from 'next/head';
 
 interface FeatureCardProps {
   icon: ReactNode;
@@ -62,23 +63,63 @@ export default function Component() {
   };
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
-      <div className="container mx-auto p-4 space-y-8">
-        <header className="flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
-              zukijourney-api v2.9
-            </h1>
-            <p className="text-xl text-muted-foreground">The largest multi-ai API of its kind!</p>
-          </div>
-          <div className="flex items-center space-x-4">
-          <Badge variant="secondary" className="text-sm">Free! (part.)</Badge>
-            <Badge variant="secondary" className="text-sm">Open Source!</Badge>
-            <Badge variant="secondary" className="text-sm">Number one! :&gt;</Badge>
-            <Switch checked={darkMode} onCheckedChange={toggleDarkMode} />
-            <Label htmlFor="dark-mode">{darkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}</Label>
-          </div>
-        </header>
+    <>
+      <Head>
+        <title>zukijourney-api v2.9 Documentation - The Largest Multi-AI API</title>
+        <meta name="description" content="Explore zukijourney-api v2.9, the largest multi-AI API. Learn about our features, token system, code samples, and pricing." />
+        <meta name="keywords" content="zukijourney, API, AI, documentation, OpenAI, Claude, Gemini, Mixtral, token system, code samples" />
+        <link rel="canonical" href="https://docs.zukijourney.com/api" />
+        <meta property="og:title" content="zukijourney-api v2.9 Documentation" />
+        <meta property="og:description" content="The largest multi-AI API with comprehensive documentation, code samples, and pricing information." />
+        <meta property="og:url" content="https://docs.zukijourney.com/api" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="zukijourney-api v2.9 Documentation" />
+        <meta name="twitter:description" content="Explore the largest multi-AI API with zukijourney-api v2.9. Get started with our comprehensive documentation." />
+        
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "TechArticle",
+              "headline": "zukijourney-api v2.9 Documentation",
+              "description": "Comprehensive documentation for zukijourney-api, the largest multi-AI API.",
+              "author": {
+                "@type": "Organization",
+                "name": "zukijourney"
+              },
+              "datePublished": "${new Date().toISOString()}",
+              "dateModified": "${new Date().toISOString()}",
+              "publisher": {
+                "@type": "Organization",
+                "name": "zukijourney",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://files.catbox.moe/amagy8.png"
+                }
+              }
+            }
+          `}
+        </script>
+      </Head>
+
+      <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
+        <main className="container mx-auto p-4 space-y-8">
+          <header className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
+                zukijourney-api v2.9
+              </h1>
+              <p className="text-xl text-muted-foreground">The largest multi-ai API of its kind!</p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Badge variant="secondary" className="text-sm">Free! (part.)</Badge>
+              <Badge variant="secondary" className="text-sm">Open Source!</Badge>
+              <Badge variant="secondary" className="text-sm">Number one! :&gt;</Badge>
+              <Switch checked={darkMode} onCheckedChange={toggleDarkMode} />
+              <Label htmlFor="dark-mode">{darkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}</Label>
+            </div>
+          </header>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -586,15 +627,16 @@ public class ZukiJourneyExample {
   </CardContent>
 </Card>
 
-        <footer className="text-center text-sm text-muted-foreground">
-          <p>Thank you to @Leander, @voidii, @perl, @sobhansajjadii, @Lukinhas, @Launchers, and @sabsterrexx for being the best people from the AI sphere.</p>
-          <p>Yall were the inspiration, and my continued motivation, for all of this ❤️</p>
-          <p className="font-semibold mt-2">~zukixa</p>
-          <span className="text-xs text-gray-500 mt-2 block">
-                Everything may be fabricated and therefore not real, the team is unaware of any illegal activities, documentation will not be taken as admission of guilt.
-          </span>
-        </footer>
+<footer className="text-center text-sm text-muted-foreground">
+            <p>Thank you to @Leander, @voidii, @perl, @sobhansajjadii, @Lukinhas, @Launchers, and @sabsterrexx for being the best people from the AI sphere.</p>
+            <p>Y&apos;all were the inspiration, and my continued motivation, for all of this ❤️</p>
+            <p className="font-semibold mt-2">~zukixa</p>
+            <span className="text-xs text-gray-500 mt-2 block">
+              Everything may be fabricated and therefore not real, the team is unaware of any illegal activities, documentation will not be taken as admission of guilt.
+            </span>
+          </footer>
+        </main>
       </div>
-    </div>
+    </>
   );
 }
