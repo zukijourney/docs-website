@@ -43,7 +43,7 @@ interface LabelProps {
 const Label: React.FC<LabelProps> = ({ htmlFor, children }) => <label htmlFor={htmlFor}>{children}</label>;
 
 export default function Component() {
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useState<boolean>(true);
   const [selectedPage, setSelectedPage] = useState("overview");
 
   const toggleDarkMode = () => {
@@ -184,7 +184,8 @@ export default function Component() {
                 <ul>
                   <li>- The bot has been primarily designed for Nation Roleplay Servers, acting as their AI GameMaster. However, naturally, other uses may arise.</li>
                   <li>- Some commands require administrator permissions, or some require the Reviser permissions, as provided with /addreviser on Page 2.</li>
-                  <li>- Any feedback, suggestions, or reports should go on the Discord under discord.gg/zukijourney</li>
+                  <li>- Any feedback, suggestions, or reports should go on the Discord under https://discord.gg/zukijourney</li>
+                  <li>- The ZUKIGM-1 Open-Source LLM is developed also by zukijourney, on the bot's dataset. Available here: https://huggingface.co/zukixalol/zukigm-1 </li>
                 </ul>
               </AccordionContent>
             </AccordionItem>
