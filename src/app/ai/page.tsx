@@ -55,7 +55,7 @@ interface LabelProps {
 const Label: React.FC<LabelProps> = ({ htmlFor, children }) => <label htmlFor={htmlFor}>{children}</label>;
 
 export default function Component() {
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
