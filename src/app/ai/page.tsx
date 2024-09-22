@@ -228,81 +228,84 @@ print(response.choices[0].message.content)`}
           </CardFooter>
         </Card>
 
-
-
         <Tabs defaultValue="usage" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="usage">Core Information</TabsTrigger>
-            <TabsTrigger value="quirks">API Quirks</TabsTrigger>
-            <TabsTrigger value="code-samples">Code Samples</TabsTrigger>
-            <TabsTrigger value="token-system">Pricing / Token System</TabsTrigger>
-          </TabsList>
+  <TabsList className="grid w-full grid-cols-4">
+    <TabsTrigger value="usage">Key Information</TabsTrigger>
+    <TabsTrigger value="quirks">API Specifics</TabsTrigger>
+    <TabsTrigger value="code-samples">Code Examples</TabsTrigger>
+    <TabsTrigger value="token-system">Pricing & Tokens</TabsTrigger>
+  </TabsList>
 
-          <TabsContent value="usage" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Important! Read this, and all other tabs, very carefully!</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-semibold">Key Features</h3>
-                    <ul className="list-disc list-inside space-y-2">
-                      <li>The API prides itself on being open-source! Our codebase can be seen here: <a href="https://github.com/zukijourney/api-oss" className="text-blue-500 hover:underline">zukijourney-api</a></li>
-                      <li>The API only supports the OpenAI format. We will not support another format, like v1/message from Anthropic.</li>
-                      <li>The API is distinguished into two different formats. v1 and unf. v1 is equivalent to the OpenAI format, but it has moderation built into itself. unf, with lower limits, has this moderation removed. This differentiation is to distribute traffic between &quot;AI Roleplayers&quot; and others.</li>
-                      <li>For each endpoint, all of our available models can be seen on our <a href="https://api.zukijourney.com/v1/models" className="text-blue-500 hover:underline">v1/models page</a> or on the <a href="https://api.zukijourney.com/unf/models" className="text-blue-500 hover:underline">unf/models page</a></li>                      
-                      <li>All models are courtesy of their respective owners, as listed in v1/models. We do not own, control, or have affiliations with these entities.</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">Global, API-Wide Rate Limits</h3>
-                    <ul className="list-disc list-inside space-y-2">
-                      <li><strong>/unf/ endpoints:</strong> 4 requests per minute per key per IP</li>
-                      <li><strong>/v1/ endpoints:</strong> 12 requests per minute per key per IP</li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+  <TabsContent value="usage" className="space-y-4">
+    <Card>
+      <CardHeader>
+        <CardTitle>Essential Information - Please Read Carefully!</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-xl font-bold mb-3">Core Features</h3>
+            <ul className="list-disc list-inside space-y-2">
+              <li><strong>Open-Source:</strong> Our codebase is available at <a href="https://github.com/zukijourney/api-oss" className="text-blue-500 hover:underline">zukijourney-api</a></li>
+              <li><strong>API Format:</strong> Only OpenAI format supported</li>
+              <li><strong>API Versions:</strong> 
+                <ul className="ml-6 list-circle">
+                  <li><strong>v1:</strong> OpenAI format with built-in moderation</li>
+                  <li><strong>unf:</strong> Lower limits, no moderation</li>
+                </ul>
+              </li>
+              <li><strong>Available Models:</strong> Check <a href="https://api.zukijourney.com/v1/models" className="text-blue-500 hover:underline">v1/models</a> or <a href="https://api.zukijourney.com/unf/models" className="text-blue-500 hover:underline">unf/models</a></li>
+              <li><strong>Model Ownership:</strong> All models courtesy of their respective owners</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-bold mb-3">Global Rate Limits</h3>
+            <ul className="list-disc list-inside space-y-2">
+              <li><strong>/unf/ endpoints:</strong> 4 requests/minute/key/IP</li>
+              <li><strong>/v1/ endpoints:</strong> 12 requests/minute/key/IP</li>
+            </ul>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
 
-          <TabsContent value="quirks" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Zukijourney Quirks: Important Considerations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="request-handling">
-                    <AccordionTrigger>Magic with the Requests.</AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="list-disc list-inside space-y-2">
-                        <li><strong>Request Reuse:</strong> (Currently disabled) Requests that are 99% similar to previous ones will receive the same response to conserve usage. This can be called a cache.</li>
-                        <li><strong>Handling Simple Requests:</strong> Short, simple, or unnecessary requests will be handled automatically by our own instance of llama-3.1-8b-instruct. We reserve the right to potentially downgrade the model chosen as a result in order to prevent wasting precious AI resources on a request that may not need it. Subscribers and enterprise-tier users are exempt from this.</li>
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="api-key-management">
-                    <AccordionTrigger>Api-Key Management</AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="list-disc list-inside space-y-2">
-                        <li><strong>IP-Locked Keys:</strong> All (except subscriber and enterprise) API-Keys are IP-LOCKED. This means that only one IP at a time can utilize your key. This is a measure of security. Use `/resetip` command to change the IP. Automating this command is prohibited.</li>
-                        <li><strong>Key Suspension:</strong> Leaving the ZukiJourney server will suspend your Api-Key. This is a measure of security. Rejoining doesnt automatically restore access, request renewed access by opening a ticket.</li>
-                        <li><strong>Account and API Usage:</strong> One account per person. Misuse will trigger automatic punitive measures.</li>
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="caramelldansen-1">
-                    <AccordionTrigger>caramelldansen-1</AccordionTrigger>
-                    <AccordionContent>
-                      <p>Our in-house developed LLM model, fine-tuned on Mixtral-8x22b. Available at 0.25x cost for all users, with -plus version for donator+ tiers with slightly better performance!</p>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </CardContent>
-            </Card>
-          </TabsContent>
+  <TabsContent value="quirks" className="space-y-4">
+    <Card>
+      <CardHeader>
+        <CardTitle>ZukiJourney API: Important Considerations</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="request-handling">
+            <AccordionTrigger>Request Processing</AccordionTrigger>
+            <AccordionContent>
+              <ul className="list-disc list-inside space-y-2">
+                <li><strong>Request Reuse:</strong> (Currently disabled) 99% similar requests may receive cached responses</li>
+                <li><strong>Simple Request Handling:</strong> May use llama-3.1-8b-instruct for efficiency (Subscribers/enterprise exempt)</li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="api-key-management">
+            <AccordionTrigger>API Key Management</AccordionTrigger>
+            <AccordionContent>
+              <ul className="list-disc list-inside space-y-2">
+                <li><strong>IP-Locked Keys:</strong> One IP per key (except subscribers/enterprise)</li>
+                <li><strong>Key Suspension:</strong> Leaving ZukiJourney server suspends key</li>
+                <li><strong>Account Policy:</strong> One account per person</li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="caramelldansen-1">
+            <AccordionTrigger>caramelldansen-1 Model</AccordionTrigger>
+            <AccordionContent>
+              <p>In-house LLM, fine-tuned on Mixtral-8x22b. 0.25x cost for all users, -plus version for donator+ tiers</p>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </CardContent>
+    </Card>
+  </TabsContent>
 
           <TabsContent value="code-samples" className="space-y-4">
             <Card>
