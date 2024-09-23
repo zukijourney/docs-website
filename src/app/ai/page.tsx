@@ -319,7 +319,6 @@ print(response.choices[0].message.content)`}
       <TabsTrigger value="api-tests">API Tests</TabsTrigger>
       <TabsTrigger value="python">Python</TabsTrigger>
       <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-      <TabsTrigger value="java">Java</TabsTrigger>
     </TabsList>
     <TabsContent value="api-tests">
       <div className="space-y-4">
@@ -391,34 +390,6 @@ async function main() {
 }
 
 main();`}
-      />
-    </TabsContent>
-    <TabsContent value="java">
-      <CodeBlock
-        language="java"
-        code={`import com.theokanning.openai.OpenAiService;
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatMessage;
-
-import java.util.Arrays;
-
-public class ZukiJourneyExample {
-    public static void main(String[] args) {
-        String token = "zu-...";
-        OpenAiService service = new OpenAiService(token);
-
-        ChatCompletionRequest request = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
-                .messages(Arrays.asList(
-                        new ChatMessage("system", "You are a helpful assistant."),
-                        new ChatMessage("user", "What's the weather like today?")
-                ))
-                .build();
-
-        String response = service.createChatCompletion(request).getChoices().get(0).getMessage().getContent();
-        System.out.println(response);
-    }
-}`}
       />
     </TabsContent>
   </Tabs>
