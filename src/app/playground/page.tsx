@@ -83,7 +83,6 @@ export default function Component() {
       setError('');
       setLoading(true);
       const response = await fetch(`${apiBase}/models`, {
-        
         headers: {
           'Authorization': `Bearer ${apiKey}`
         }
@@ -209,6 +208,7 @@ export default function Component() {
     setLoading(true)
     setError('')
     const newMessage: Message = { role: 'user', content: prompt }
+    
     setMessages(prev => [...prev, newMessage])
 
     const success = await sendRequest(newMessage)
@@ -346,10 +346,10 @@ export default function Component() {
               </TabsContent>
             </Tabs>
             <ScrollArea className="h-[400px] border rounded-md p-4 bg-white/10" ref={scrollAreaRef}>
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {messages.map((message, index) => (
                   <motion.div
-                    key={index}
+                    key={`${index}-${message.content.substring(0, 10)}`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
@@ -358,15 +358,15 @@ export default function Component() {
                   >
                     <div className={`max-w-[70%] p-3 rounded-lg ${
                       message.role === 'user'
-                        ? 'bg-purple-600 text-white'
+                        ? 'bg-purple-600 text-white !important'
                         : message.role === 'error'
-                        ? 'bg-red-600 text-white cursor-pointer'
-                        : 'bg-white/30 backdrop-blur-md text-white'
+                        ? 'bg-red-600 text-white !important cursor-pointer'
+                        : 'bg-white/30 backdrop-blur-md text-black !important'
                     }`} onClick={() => message.role === 'error' && handleRetry(index)}>
                       {message.type === 'image' ? (
                         <img src={message.content} alt="Generated image" className="max-w-full h-auto rounded" />
                       ) : (
-                        <p>{message.content}</p>
+                        <p className="break-words">{message.content}</p>
                       )}
                       {message.role === 'error' && (
                         <Button
