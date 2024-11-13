@@ -100,37 +100,7 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ filters, onFilterChange }
   </div>
 );
 const useModelIcon = (model: Model): string => {
-    const [iconUrl, setIconUrl] = useState<string>('/default-model-icon.png');
-    
-    useEffect(() => {
-      const fetchWithRetry = async (url: string, retries = 3): Promise<void> => {
-        for (let i = 0; i < retries; i++) {
-          try {
-            const response = await fetch(url);
-            if (response.ok) {
-              setIconUrl(url);
-              localStorage.setItem(`model-icon-${model.owned_by}`, url);
-              return;
-            }
-          } catch (e) {
-            if (i === retries - 1) {
-              console.error(`Failed to load icon for ${model.owned_by}`);
-            }
-          }
-          await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-        }
-      };
-  
-      const cachedUrl = localStorage.getItem(`model-icon-${model.owned_by}`);
-      if (cachedUrl) {
-        setIconUrl(cachedUrl);
-      } else {
-        const url = getModelIcon(model);
-        fetchWithRetry(url);
-      }
-    }, [model]);
-  
-    return iconUrl;
+    return getModelIcon(model);
   };
   
   const getModelIcon = (model: Model): string => {
@@ -329,38 +299,37 @@ const useModelIcon = (model: Model): string => {
     });
     const { theme, setTheme } = useTheme();
   
-    interface ModelsApiResponse {
-        data: Model[];
-        object: string;
-      }
-      
-      useEffect(() => {
+    // Add this interface for the API response
+    interface ApiResponse {
+        models: Model[];
+        unfModels: Model[];
+        error?: string;
+    }
+    
+    useEffect(() => {
         const fetchModels = async (): Promise<void> => {
-          try {
-            const [modelsResponse, unfModelsResponse] = await Promise.all([
-              fetch('https://api.zukijourney.com/v1/models'),
-              fetch('https://api.zukijourney.com/unf/models')
-            ]);
+        try {
+            const response = await fetch('/api/model-list');
+            const data = await response.json() as ApiResponse;
             
-            const modelsData = (await modelsResponse.json()) as ModelsApiResponse;
-            const unfModelsData = (await unfModelsResponse.json()) as ModelsApiResponse;
+            if (!response.ok) throw new Error(data.error || 'Failed to fetch models');
             
-            // Deduplicate models based on ID
+            // Now TypeScript knows these are Model arrays
             const uniqueModels = Array.from(
-              new Map(modelsData.data.map((model: Model) => [model.id, model])).values()
+            new Map(data.models.map((model: Model) => [model.id, model])).values()
             );
             
             setModels(uniqueModels);
-            setUnfModels(unfModelsData.data);
-          } catch (err) {
+            setUnfModels(data.unfModels);
+        } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to fetch models');
-          } finally {
+        } finally {
             setIsLoading(false);
-          }
+        }
         };
-      
+    
         fetchModels();
-      }, []);
+    }, []);
   
     const isModelInUnf = (modelId: string): boolean => {
       return unfModels.some(unfModel => unfModel.id === modelId);
