@@ -280,10 +280,22 @@ print(response.choices[0].message.content)`}
           <AccordionItem value="request-handling">
             <AccordionTrigger>Request Processing</AccordionTrigger>
             <AccordionContent>
-              <ul className="list-disc list-inside space-y-2">
-                <li><strong>Request Reuse:</strong> (Currently disabled) 99% similar requests may receive cached responses</li>
-                <li><strong>Simple Request Handling:</strong> May use llama-3.1-8b-instruct for efficiency (Subscribers/enterprise exempt)</li>
-              </ul>
+            <ul className="list-disc list-inside space-y-2">
+              <li>
+                  <strong>Understanding Downgrade Condition:</strong> 
+                  Llama responding to you is part of our process. Zukijourney employs an internal algorithm to evaluate requests by their length and complexity. 
+                  Requests that are:
+                  1. Too short.
+                  2. Don’t warrant the use of 'expensive models'.
+                  Are handled by llama-3.1-8b-instruct.
+              </li>
+              <li>
+                  <strong>Important Points:</strong> 
+                  • Subscribers and higher tiers are exempt from this process.
+                  • For downgraded requests, only the llama-3.1-8b-instruct coefficient cost applies.
+                  • This policy will remain unchanged.
+              </li>
+          </ul>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="api-key-management">
