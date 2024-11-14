@@ -286,7 +286,7 @@ print(response.choices[0].message.content)`}
                   Llama responding to you is part of our process. Zukijourney employs an internal algorithm to evaluate requests by their length and complexity. 
                   Requests that are:
                   1. Too short.
-                  2. Don’t warrant the use of 'expensive models'.
+                  2. Do not warrant the use of expensive models.
                   Are handled by llama-3.1-8b-instruct.
               </li>
               <li>
