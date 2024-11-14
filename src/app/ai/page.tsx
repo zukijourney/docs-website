@@ -443,24 +443,40 @@ main();`}
       </TableHeader>
       <TableBody>
         <TableRow>
+          <TableCell>3.0x</TableCell>
+          <TableCell>o1-preview</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>2.5x</TableCell>
+          <TableCell>claude-3-opus</TableCell>
+        </TableRow>
+        <TableRow>
           <TableCell>1.5x</TableCell>
-          <TableCell>gpt-4-1106-preview and later, claude-3-opus and later, gpt-4-vision-preview</TableCell>
+          <TableCell>gpt-4-1106-preview, gpt-4-0125-preview, claude-3.5-sonnet, o1-mini</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>1.25x</TableCell>
-          <TableCell>gpt-4 and later, claude-3-sonnet</TableCell>
+          <TableCell>gpt-4, gpt-4-turbo, claude-3.5-haiku-20241022, gemini-1.5-pro-latest</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell>1x</TableCell>
-          <TableCell>gpt-4o-mini + all non-4 gpt models, claude-3-haiku and before, All Gemini/Mistral-Series models</TableCell>
+          <TableCell>0.75x</TableCell>
+          <TableCell>gpt-3.5-turbo, claude-3-haiku, gemini-1.5-flash-latest, caramelldansen-1-plus</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>0.5x</TableCell>
-          <TableCell>all other models not developed by zukijourney</TableCell>
+          <TableCell>codestral, mistral-nemo, gemma-2-9b, gemma-2-27b</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>0.25x</TableCell>
-          <TableCell>our own models: caramelldansen-1 & caramelldansen-1-plus</TableCell>
+          <TableCell>mixtral-8x7b-instruct, llama-3.1-70b-instruct, russian models</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>0.15x</TableCell>
+          <TableCell>zukigm-1, llama-3-8b-instruct, llama-3.1-8b-instruct</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>0.1x</TableCell>
+          <TableCell>llama-3.2-1b-instruct</TableCell>
         </TableRow>
       </TableBody>
     </Table>
@@ -483,20 +499,48 @@ main();`}
           <TableCell>Midjourney</TableCell>
         </TableRow>
         <TableRow>
+          <TableCell>7,500</TableCell>
+          <TableCell>flux-1.1-pro-ultra-raw</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>6,000</TableCell>
+          <TableCell>flux-1.1-pro-ultra</TableCell>
+        </TableRow>
+        <TableRow>
           <TableCell>2,500</TableCell>
-          <TableCell>DALLE-2 and Later, Stable-Diffusion-3-Large, Stable-Image-Ultra/Core and later</TableCell>
+          <TableCell>DALL-E 3, Stable-Diffusion-3-Large, flux-1.1-pro, stable-image-ultra</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>750</TableCell>
+          <TableCell>stable-diffusion-3.5-large-turbo</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>650</TableCell>
+          <TableCell>stable-image-core</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>500</TableCell>
+          <TableCell>Suno music generation, flux-pro</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>250</TableCell>
-          <TableCell>Stable-Diffusion-3-Medium and the Flux Model series</TableCell>
+          <TableCell>recraft-v3, flux models (standard)</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>200</TableCell>
+          <TableCell>TTS-1, ElevenLabs voice generation</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>100</TableCell>
-          <TableCell>All Image Models provided by Prodia. All requests in the Audio, Embeddings, Image-Upscaling endpoints</TableCell>
+          <TableCell>Speechify, Prodia models, Audio processing, Embeddings, Whisper</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>50</TableCell>
+          <TableCell>pollinations</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>10</TableCell>
-          <TableCell>All requests in the Moderations and Text-Translations endpoint</TableCell>
+          <TableCell>Text translations, Moderations</TableCell>
         </TableRow>
       </TableBody>
     </Table>
@@ -513,68 +557,68 @@ main();`}
             <CardTitle>Daily Token Allowances (1 Token ~ 1 OpenAI Token)</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Role</TableHead>
-                  <TableHead>How to get?</TableHead>
-                  <TableHead>Tokens/Day</TableHead>
-                  <TableHead>Messages/Day</TableHead>
-                  <TableHead>Key Type</TableHead>
-                  <TableHead>Support Priority</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell>@Member</TableCell>
-                  <TableCell>Join the server! discord.gg/zukijourney</TableCell>
-                  <TableCell>22,500</TableCell>
-                  <TableCell>~126</TableCell>
-                  <TableCell>IP-Locked</TableCell>
-                  <TableCell>Low</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>@Booster</TableCell>
-                  <TableCell>Boost the server! It will last for as long as you keep the boost active.</TableCell>
-                  <TableCell>200,000</TableCell>
-                  <TableCell>~400</TableCell>
-                  <TableCell>IP-Locked</TableCell>
-                  <TableCell>Medium</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>@Donator</TableCell>
-                  <TableCell>A one-time donation of at least $5.00.</TableCell>
-                  <TableCell>200,000</TableCell>
-                  <TableCell>~400</TableCell>
-                  <TableCell>IP-Locked</TableCell>
-                  <TableCell>Medium</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>@Early Supporter/Contributor</TableCell>
-                  <TableCell>Unavailable/Contribute to the project.</TableCell>
-                  <TableCell>225,000</TableCell>
-                  <TableCell>~450</TableCell>
-                  <TableCell>IP-Locked</TableCell>
-                  <TableCell>Medium</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>@Subscriber</TableCell>
-                  <TableCell>Donation of at least $10.00 monthly.</TableCell>
-                  <TableCell>450,000</TableCell>
-                  <TableCell>~900</TableCell>
-                  <TableCell>IP-Free</TableCell>
-                  <TableCell>High</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>@Enterprise</TableCell>
-                  <TableCell>Donation of at least $100.00 monthly.</TableCell>
-                  <TableCell>4,000,000</TableCell>
-                  <TableCell>~10,000</TableCell>
-                  <TableCell>IP-Free</TableCell>
-                  <TableCell>Highest</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Role</TableHead>
+      <TableHead>How to get?</TableHead>
+      <TableHead>Tokens/Day</TableHead>
+      <TableHead>Messages/Day</TableHead>
+      <TableHead>Key Type</TableHead>
+      <TableHead>Additional Benefits</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>@Member</TableCell>
+      <TableCell>Join the server!</TableCell>
+      <TableCell>42,069</TableCell>
+      <TableCell>~200</TableCell>
+      <TableCell>IP-Locked</TableCell>
+      <TableCell>Access to all free models, basic bot access</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>@Donator/Booster</TableCell>
+      <TableCell>$5 one-time or server boost</TableCell>
+      <TableCell>300,000</TableCell>
+      <TableCell>~600</TableCell>
+      <TableCell>IP-Locked</TableCell>
+      <TableCell>Premium models, 90% lower cooldowns</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>@Contributor</TableCell>
+      <TableCell>Help improve community</TableCell>
+      <TableCell>325,000</TableCell>
+      <TableCell>~650</TableCell>
+      <TableCell>IP-Locked</TableCell>
+      <TableCell>All donator perks + staff benefits</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>@Subscriber</TableCell>
+      <TableCell>$10/month</TableCell>
+      <TableCell>750,000</TableCell>
+      <TableCell>~1,200</TableCell>
+      <TableCell>IP-Free</TableCell>
+      <TableCell>Early access models, no downgrades</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>@OnlyFans Tier</TableCell>
+      <TableCell>$25/month</TableCell>
+      <TableCell>3,000,000</TableCell>
+      <TableCell>~4,000</TableCell>
+      <TableCell>IP-Free</TableCell>
+      <TableCell>All subscriber perks + 4x tokens</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>@Enterprise</TableCell>
+      <TableCell>$50/month</TableCell>
+      <TableCell>7,000,000</TableCell>
+      <TableCell>~10,000</TableCell>
+      <TableCell>IP-Free</TableCell>
+      <TableCell>Custom arrangements, priority support</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
           </CardContent>
         </Card>
         <Card>

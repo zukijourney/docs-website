@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ChevronDown, ChevronUp, Plus, Info } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+// [Previous imports remain the same]
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 interface Command {
   name: string;
@@ -479,67 +481,165 @@ function CommandCard({ command }: { command: Command }) {
   )
 }
 
+function FAQSection() {
+  return (
+    <Accordion type="single" collapsible className="w-full space-y-4">
+      <AccordionItem value="improving-responses">
+        <AccordionTrigger>Improving Bot Responses</AccordionTrigger>
+        <AccordionContent>
+          <div className="space-y-4">
+            <h4 className="font-semibold">Key Elements for Better Responses:</h4>
+            <ul className="list-disc pl-6">
+              <li>Use Context Fields in /gm:
+                <ul className="list-circle pl-6">
+                  <li>Fill out context</li>
+                  <li>Include visual_context</li>
+                  <li>Provide previous information</li>
+                </ul>
+              </li>
+              <li>Server Setup:
+                <ul className="list-circle pl-6">
+                  <li>Use /settings task:Add/Override Server-Context</li>
+                  <li>Configure /rag_info system</li>
+                </ul>
+              </li>
+              <li>Fine-tuning:
+                <ul className="list-circle pl-6">
+                  <li>Use /approve for manual adjustments</li>
+                  <li>Provide detailed scenarios</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="context-system">
+        <AccordionTrigger>Context System</AccordionTrigger>
+        <AccordionContent>
+          <div className="space-y-4">
+            <h4 className="font-semibold">Essential Setup:</h4>
+            <ul className="list-disc pl-6">
+              <li>Use /settings task:Add/Override Server-Context</li>
+              <li>Configure /rag_info system</li>
+            </ul>
+            <p>For Each Command:</p>
+            <ul className="list-disc pl-6">
+              <li>Provide detailed context</li>
+              <li>Include visual descriptions</li>
+              <li>Reference previous interactions</li>
+            </ul>
+            <p className="italic">The more context provided, the better the responses!</p>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="difficulty-settings">
+        <AccordionTrigger>Difficulty Settings</AccordionTrigger>
+        <AccordionContent>
+          <div className="space-y-4">
+            <h4 className="font-semibold">Changing Difficulty:</h4>
+            <ul className="list-disc pl-6">
+              <li>Use /settings task:Harshness</li>
+              <li>Default setting is easy</li>
+              <li>Higher difficulty = harsher responses</li>
+            </ul>
+            <p className="italic">Note: If still not harsh enough after maximum setting, please provide feedback to staff!</p>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="combat-improvement">
+        <AccordionTrigger>Combat Responses</AccordionTrigger>
+        <AccordionContent>
+          <div className="space-y-4">
+            <h4 className="font-semibold">For Better Military/Combat Responses, Include:</h4>
+            <ul className="list-disc pl-6">
+              <li>Equipment sheets</li>
+              <li>Current battle plans</li>
+              <li>War territory status</li>
+              <li>Tactical maps</li>
+              <li>Unit compositions</li>
+            </ul>
+            <p className="font-semibold mt-4">Remember:</p>
+            <ul className="list-disc pl-6">
+              <li>More detailed context = better responses</li>
+              <li>Use /approve for tactical adjustments</li>
+              <li>Keep information organized and clear</li>
+            </ul>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+
 function ZukiGMCommands() {
-    const [searchTerm, setSearchTerm] = useState<string>("")
-    const [activeTab, setActiveTab] = useState<string>("overview")
-  
-    const filteredCommands = commandData.filter(command =>
-      (command.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      command.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (activeTab === "all" || command.category === activeTab)
-    )
-  
-    return (
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              zuki.gm Commands
-              <div className="space-x-2">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => window.open("https://discord.com/oauth2/authorize?client_id=1055209868899913788", "_blank")}
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add to Server
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => window.open("https://discord.com/application-directory/1055209868899913788", "_blank")}
-                >
-                  <Info className="h-4 w-4 mr-2" />
-                  View in Directory
-                </Button>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-6">
-              <p className="text-sm text-gray-600 mb-4">
-                zuki.gm is an advanced AI-powered GameMaster bot for Discord, designed primarily for Nation Roleplay Servers. 
-                It offers a wide range of features including AI-driven simulations, image generation, writing assistance, NPC management, and a new RAG system for enhanced context awareness.
-              </p>
-              <Input
-                type="text"
-                placeholder="Search commands..."
-                value={searchTerm}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-                className="mb-4"
-              />
-            </div>
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="mb-4">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="ai-gamemaster">AI GameMaster</TabsTrigger>
-                <TabsTrigger value="ai-video-image">AI Video/Image</TabsTrigger>
-                <TabsTrigger value="ai-writing">AI Writing</TabsTrigger>
-                <TabsTrigger value="npc">AI NPCs</TabsTrigger>
-                <TabsTrigger value="rag">AI RAG System</TabsTrigger>
-                <TabsTrigger value="general">Other</TabsTrigger>
-                <TabsTrigger value="all">All Commands</TabsTrigger>
-              </TabsList>
-              <TabsContent value={activeTab}>
+  const [searchTerm, setSearchTerm] = useState<string>("")
+  const [activeTab, setActiveTab] = useState<string>("overview")
+
+  const filteredCommands = commandData.filter(command =>
+    (command.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    command.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
+    (activeTab === "all" || command.category === activeTab)
+  )
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="flex justify-between items-center">
+          zuki.gm Commands
+          <div className="space-x-2">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => window.open("https://discord.com/oauth2/authorize?client_id=1055209868899913788", "_blank")}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add to Server
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => window.open("https://discord.com/application-directory/1055209868899913788", "_blank")}
+            >
+              <Info className="h-4 w-4 mr-2" />
+              View in Directory
+            </Button>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-6">
+          <p className="text-sm text-gray-600 mb-4">
+            zuki.gm is an advanced AI-powered GameMaster bot for Discord, designed primarily for Nation Roleplay Servers. 
+            It offers a wide range of features including AI-driven simulations, image generation, writing assistance, NPC management, and a new RAG system for enhanced context awareness.
+          </p>
+          <Input
+            type="text"
+            placeholder="Search commands..."
+            value={searchTerm}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+            className="mb-4"
+          />
+        </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="mb-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="ai-gamemaster">AI GameMaster</TabsTrigger>
+            <TabsTrigger value="ai-video-image">AI Video/Image</TabsTrigger>
+            <TabsTrigger value="ai-writing">AI Writing</TabsTrigger>
+            <TabsTrigger value="npc">AI NPCs</TabsTrigger>
+            <TabsTrigger value="rag">AI RAG System</TabsTrigger>
+            <TabsTrigger value="general">Other</TabsTrigger>
+            <TabsTrigger value="faq">FAQ</TabsTrigger>
+            <TabsTrigger value="all">All Commands</TabsTrigger>
+          </TabsList>
+          <TabsContent value={activeTab}>
+            {activeTab === 'faq' ? (
+              <FAQSection />
+            ) : (
+              <>
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold mb-2">About this Category</h3>
                   <p className="text-sm text-gray-600 mb-4">
@@ -549,11 +649,13 @@ function ZukiGMCommands() {
                 {filteredCommands.map(command => (
                   <CommandCard key={command.name} command={command} />
                 ))}
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
-      )
-    }
-    
-    export default ZukiGMCommands
+              </>
+            )}
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  )
+}
+
+export default ZukiGMCommands

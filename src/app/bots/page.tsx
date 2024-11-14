@@ -10,6 +10,9 @@ import { Moon, Sun, Code, Zap, Gift, Key, ExternalLink, MessageSquare, BookOpen,
 import Link from 'next/link';
 import { ZukiTimeCommands } from '@/components/ZukiTimeCommands';
 import ZukiGMCommands from '@/components/ZukiGMCommands';
+// Add these new imports at the top
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 interface FeatureCardProps {
   icon: ReactNode;
   title: string;
