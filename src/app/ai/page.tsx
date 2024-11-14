@@ -136,9 +136,15 @@ export default function Component() {
             </CardContent>
             <CardFooter className="flex flex-wrap gap-4">
               <Button variant="outline" asChild>
-                <a href="https://github.com/zukixa/cool-ai-stuff" target="_blank" rel="noopener noreferrer">
+                <a href="https://cas.zukijourney.com" target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="mr-2 h-4 w-4" />
                   See why we are #1
+                </a>
+              </Button>
+              <Button variant="outline" asChild>
+                <a href="https://docs.zukijourney.com/models" target="_blank" rel="noopener noreferrer">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  See all our models!
                 </a>
               </Button>
               <Button variant="outline" asChild>
@@ -153,6 +159,7 @@ export default function Component() {
                   Bots Documentation
                 </a>
               </Button>
+              
               <Button variant="default" asChild>
                 <Link href="#quick-start">
                   <Rocket className="mr-2 h-4 w-4" />
@@ -282,18 +289,18 @@ print(response.choices[0].message.content)`}
             <AccordionContent>
             <ul className="list-disc list-inside space-y-2">
               <li>
-                  <strong>Understanding Downgrade Condition:</strong> 
-                  Llama responding to you is part of our process. Zukijourney employs an internal algorithm to evaluate requests by their length and complexity. 
-                  Requests that are:
-                  1. Too short.
-                  2. Do not warrant the use of expensive models.
-                  Are handled by llama-3.1-8b-instruct.
+                  <strong>Understanding Downgrade Condition:</strong> <br></br>
+                  Llama responding to you is part of our process. Zukijourney employs an internal algorithm to evaluate requests by their length and complexity.  <br></br>
+                  Requests that are: <br></br>
+                  1. Too short. <br></br>
+                  2. Do not warrant the use of expensive models. <br></br>
+                  Are handled by llama-3.1-8b-instruct.<br></br>
               </li>
               <li>
-                  <strong>Important Points:</strong> 
-                  • Subscribers and higher tiers are exempt from this process.
-                  • For downgraded requests, only the llama-3.1-8b-instruct coefficient cost applies.
-                  • This policy will remain unchanged.
+                  <strong>Important Points:</strong> <br></br>
+                  • Subscribers and higher tiers are exempt from this process.<br></br>
+                  • For downgraded requests, only the llama-3.1-8b-instruct coefficient cost applies.<br></br>
+                  • This policy will remain unchanged.<br></br>
               </li>
           </ul>
             </AccordionContent>
