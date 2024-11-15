@@ -143,6 +143,9 @@ const useModelIcon = (model: Model): string => {
         'prodia': 'https://avatars.githubusercontent.com/u/42473139?s=200&v=4',
         'suno': 'https://avatars.githubusercontent.com/u/99442120?s=200&v=4',
         'elevenlabs': 'https://avatars.githubusercontent.com/u/94471909?s=200&v=4',
+        'speechify': 'https://avatars.githubusercontent.com/u/32529485?s=200&v=4',
+        'mixedbread': 'https://avatars.githubusercontent.com/u/153227975?s=200&v=4',
+        'https://arxiv.org/abs/2105.09750': 'https://avatars.githubusercontent.com/u/45442578?s=200&v=4',
         };
   
     return providerIcons[model.owned_by] || '/default-model-icon.png';
