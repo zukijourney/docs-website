@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import ReactMarkdown from 'react-markdown'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -10,7 +11,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChevronRight, Image as ImageIcon, MessageSquare, Send, Sparkles, Lock, Unlock, Search, RefreshCw } from 'lucide-react'
+import { ChevronRight, Image as ImageIcon, MessageSquare, Send, Sparkles, Lock, Unlock, Search, RefreshCw, X } from 'lucide-react'
 import { stringify } from 'querystring'
 
 const defaultApiBase = 'https://api.zukijourney.com/v1'
@@ -23,10 +24,23 @@ interface Model {
   endpoint: string
 }
 
+interface MessageContent {
+  type: 'text' | 'image_url'
+  text?: string
+  image_url?: string
+}
+
 interface Message {
   role: 'user' | 'assistant' | 'error'
-  content: string
-  type?: 'text' | 'image'
+  content: string | MessageContent[]
+  type?: 'text' | 'image' | 'markdown'
+}
+
+interface CodeProps {
+  node?: any
+  inline?: boolean
+  className?: string
+  children?: React.ReactNode
 }
 
 export default function Component() {
@@ -43,6 +57,29 @@ export default function Component() {
   const [error, setError] = useState<string>('')
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const fetchModelsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const [attachedImages, setAttachedImages] = useState<string[]>([])
+
+  const removeAttachedImage = (index: number) => {
+    setAttachedImages(prev => prev.filter((_, i) => i !== index))
+  }
+  
+  // Handle file input change
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+
+    Array.from(files).forEach(file => {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setAttachedImages(prev => [...prev, e.target!.result as string])
+        }
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
 
   useEffect(() => {
     const savedApiKey = localStorage.getItem('apiKey')
@@ -161,6 +198,19 @@ export default function Component() {
         throw new Error('Invalid endpoint URL')
       }
 
+      const formattedMessage = endpoint === 'chat' && attachedImages.length > 0
+        ? {
+            role: 'user',
+            content: [
+              { type: 'text', text: messageToSend.content as string },
+              ...attachedImages.map(img => ({
+                type: 'image_url',
+                image_url: img
+              }))
+            ]
+          }
+        : messageToSend
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -171,7 +221,7 @@ export default function Component() {
           endpoint === 'chat'
             ? {
                 model: model,
-                messages: [...messages, messageToSend],
+                messages: [...messages, formattedMessage],
               }
             : {
                 model: model,
@@ -189,9 +239,20 @@ export default function Component() {
       }
 
       if (endpoint === 'chat') {
-        setMessages(prev => [...prev, data.choices[0].message])
+        const assistantMessage: Message = {
+          role: 'assistant',
+          content: data.choices[0].message.content,
+          type: 'markdown'
+        }
+        setMessages(prev => [...prev, assistantMessage])
+        setAttachedImages([])
       } else {
-        setMessages(prev => [...prev, { role: 'assistant', content: data.data[0].url, type: 'image' }])
+        const imageMessage: Message = {
+          role: 'assistant',
+          content: data.data[0].url,
+          type: 'image'
+        }
+        setMessages(prev => [...prev, imageMessage])
       }
       return true
     } catch (error) {
@@ -200,7 +261,6 @@ export default function Component() {
       return false
     }
   }
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!prompt.trim()) return
@@ -236,6 +296,36 @@ export default function Component() {
 
     setLoading(false)
   }
+  const renderMessage = (message: Message) => {
+    if (message.type === 'image') {
+      return <img src={message.content as string} alt="Generated image" className="max-w-full h-auto rounded" />
+    }
+    
+    if (message.type === 'markdown' && typeof message.content === 'string') {
+      return (
+        <ReactMarkdown
+          className="prose prose-invert"
+          components={{
+            code: ({ node, inline, className, children, ...props }: CodeProps) => {
+              if (inline) {
+                return <code className="bg-black/20 rounded px-1" {...props}>{children}</code>
+              }
+              return (
+                <pre className="bg-black/20 p-4 rounded-lg overflow-x-auto">
+                  <code {...props}>{children}</code>
+                </pre>
+              )
+            }
+          }}
+        >
+          {message.content}
+        </ReactMarkdown>
+      )
+    }
+
+    return <p className="break-words">{message.content as string}</p>
+  }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-8 flex items-center justify-center">
@@ -349,7 +439,7 @@ export default function Component() {
               <AnimatePresence initial={false}>
                 {messages.map((message, index) => (
                   <motion.div
-                    key={`${index}-${message.content.substring(0, 10)}`}
+                    key={`${index}-${typeof message.content === 'string' ? message.content.substring(0, 10) : index}`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
@@ -358,15 +448,18 @@ export default function Component() {
                   >
                     <div className={`max-w-[70%] p-3 rounded-lg ${
                       message.role === 'user'
-                        ? 'bg-purple-600 text-white !important'
+                        ? 'bg-purple-600 text-white'
                         : message.role === 'error'
-                        ? 'bg-red-600 text-white !important cursor-pointer'
-                        : 'bg-white/30 backdrop-blur-md text-black !important'
+                        ? 'bg-red-600 text-white cursor-pointer'
+                        : 'bg-white/30 backdrop-blur-md text-black'
                     }`} onClick={() => message.role === 'error' && handleRetry(index)}>
-                      {message.type === 'image' ? (
-                        <img src={message.content} alt="Generated image" className="max-w-full h-auto rounded" />
-                      ) : (
-                        <p className="break-words">{message.content}</p>
+                      {renderMessage(message)}
+                      {attachedImages.length > 0 && message.role === 'user' && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {attachedImages.map((img, idx) => (
+                            <img key={idx} src={img} alt={`Attached ${idx + 1}`} className="w-16 h-16 object-cover rounded" />
+                          ))}
+                        </div>
                       )}
                       {message.role === 'error' && (
                         <Button
@@ -388,35 +481,86 @@ export default function Component() {
           </div>
         </CardContent>
         <CardFooter>
-          <form onSubmit={handleSubmit} className="flex w-full space-x-2">
-            <Textarea
-              value={prompt}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 bg-white/20 border-none text-white placeholder-white/50 resize-none"
-            />
-            <Button
-              type="submit"
-              disabled={loading || models.length === 0}
-              className={`bg-gradient-to-r ${
-                endpoint === 'chat'
-                  ? 'from-purple-600 to-indigo-600'
-                  : 'from-pink-600 to-red-600'
-              } text-white font-bold py-2 px-4 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105`}
-            >
-              {loading ? (
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                >
-                  <Sparkles className="h-5 w-5" />
-                </motion.div>
-              ) : endpoint === 'chat' ? (
-                <><Send className="mr-2 h-4 w-4" /> Send</>
-              ) : (
-                <><ImageIcon className="mr-2 h-4 w-4" /> Generate</>
-              )}
-            </Button>
+          <form onSubmit={handleSubmit} className="flex w-full flex-col space-y-4">
+            {/* Image Preview Section */}
+            {endpoint === 'chat' && attachedImages.length > 0 && (
+              <div className="flex flex-wrap gap-2 p-2 bg-white/10 rounded-lg">
+                {attachedImages.map((img, idx) => (
+                  <div key={idx} className="relative group">
+                    <img 
+                      src={img} 
+                      alt={`Preview ${idx + 1}`} 
+                      className="w-20 h-20 object-cover rounded-lg border-2 border-white/50"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeAttachedImage(idx)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div className="flex w-full space-x-2">
+              <div className="flex-1 space-y-2">
+                <Textarea
+                  value={prompt}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
+                  placeholder="Type your message..."
+                  className="w-full bg-white/20 border-none text-white placeholder-white/50 resize-none"
+                />
+                {endpoint === 'chat' && (
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleFileChange}
+                      className="hidden"
+                      id="image-upload"
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => document.getElementById('image-upload')?.click()}
+                      className="bg-white/20 text-white hover:bg-white/30"
+                    >
+                      <ImageIcon className="mr-2 h-4 w-4" />
+                      Attach Images
+                      {attachedImages.length > 0 && (
+                        <span className="ml-2 bg-white/30 px-2 py-0.5 rounded-full text-sm">
+                          {attachedImages.length}
+                        </span>
+                      )}
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <Button
+                type="submit"
+                disabled={loading || models.length === 0}
+                className={`bg-gradient-to-r ${
+                  endpoint === 'chat'
+                    ? 'from-purple-600 to-indigo-600'
+                    : 'from-pink-600 to-red-600'
+                } text-white font-bold py-2 px-4 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105`}
+              >
+                {loading ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  >
+                    <Sparkles className="h-5 w-5" />
+                  </motion.div>
+                ) : endpoint === 'chat' ? (
+                  <><Send className="mr-2 h-4 w-4" /> Send</>
+                ) : (
+                  <><ImageIcon className="mr-2 h-4 w-4" /> Generate</>
+                )}
+              </Button>
+            </div>
           </form>
         </CardFooter>
       </Card>
