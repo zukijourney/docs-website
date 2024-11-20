@@ -194,6 +194,7 @@ export default function Component() {
       }
       let url = `${apiBase}${selectedModel.endpoint}`
       url = url.replace(/v1\/v1/, 'v1')
+      url = url.replace(/unf\/unf/, 'unf')
       if (!url.match(/(v1\/chat\/completions|v1\/images\/generations|unf\/chat\/completions)$/)) {
         throw new Error('Invalid endpoint URL')
       }
