@@ -48,7 +48,7 @@ export default function Component() {
           <section className="w-full max-w-2xl mx-auto">
             <Card>
               <CardHeader>
-                <h2 className="text-2xl font-semibold">Welcome to zukijourney-docs!</h2>
+                <h2 className="text-2xl font-semibold">Welcome to zukijourney-docs!!</h2>
                 <CardDescription>Choose your documentation or explore our features.</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-4">
