@@ -65,7 +65,7 @@ export default function Component() {
   return (
     <>
       <Head>
-        <title>zukijourney-api v4 Documentation - The Largest Multi-AI API</title>
+        <title>zukijourney-api v4 Documentation - The Largest Multi-AI API on Discord!</title>
         <meta name="description" content="Explore zukijourney-api v4, the largest multi-AI API. Learn about our features, token system, code samples, and pricing." />
         <meta name="keywords" content="zukijourney, API, AI, documentation, OpenAI, Claude, Gemini, Mixtral, token system, code samples" />
         <link rel="canonical" href="https://docs.zukijourney.com/api" />
