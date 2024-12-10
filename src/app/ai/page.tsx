@@ -65,24 +65,24 @@ export default function Component() {
   return (
     <>
       <Head>
-        <title>zukijourney-api v2.9 Documentation - The Largest Multi-AI API</title>
-        <meta name="description" content="Explore zukijourney-api v2.9, the largest multi-AI API. Learn about our features, token system, code samples, and pricing." />
+        <title>zukijourney-api v4 Documentation - The Largest Multi-AI API</title>
+        <meta name="description" content="Explore zukijourney-api v4, the largest multi-AI API. Learn about our features, token system, code samples, and pricing." />
         <meta name="keywords" content="zukijourney, API, AI, documentation, OpenAI, Claude, Gemini, Mixtral, token system, code samples" />
         <link rel="canonical" href="https://docs.zukijourney.com/api" />
-        <meta property="og:title" content="zukijourney-api v2.9 Documentation" />
+        <meta property="og:title" content="zukijourney-api v4 Documentation" />
         <meta property="og:description" content="The largest multi-AI API with comprehensive documentation, code samples, and pricing information." />
         <meta property="og:url" content="https://docs.zukijourney.com/api" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="zukijourney-api v2.9 Documentation" />
-        <meta name="twitter:description" content="Explore the largest multi-AI API with zukijourney-api v2.9. Get started with our comprehensive documentation." />
+        <meta name="twitter:title" content="zukijourney-api v4 Documentation" />
+        <meta name="twitter:description" content="Explore the largest multi-AI API with zukijourney-api v4. Get started with our comprehensive documentation." />
         
         <script type="application/ld+json">
           {`
             {
               "@context": "https://schema.org",
               "@type": "TechArticle",
-              "headline": "zukijourney-api v2.9 Documentation",
+              "headline": "zukijourney-api v4 Documentation",
               "description": "Comprehensive documentation for zukijourney-api, the largest multi-AI API.",
               "author": {
                 "@type": "Organization",
@@ -108,7 +108,7 @@ export default function Component() {
           <header className="flex justify-between items-center">
             <div>
               <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
-                zukijourney-api v2.9
+                zukijourney-api v4
               </h1>
               <p className="text-xl text-muted-foreground">The largest multi-ai API of its kind!</p>
             </div>
@@ -453,116 +453,14 @@ main();`}
                   <AccordionItem value="cost-multipliers">
   <AccordionTrigger>Cost Multipliers by Model</AccordionTrigger>
   <AccordionContent>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Multiplier</TableHead>
-          <TableHead>Models/Categories</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell>3.0x</TableCell>
-          <TableCell>o1-preview</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>2.5x</TableCell>
-          <TableCell>claude-3-opus</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>1.5x</TableCell>
-          <TableCell>gpt-4-1106-preview, gpt-4-0125-preview, claude-3.5-sonnet, o1-mini</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>1.25x</TableCell>
-          <TableCell>gpt-4, gpt-4-turbo, claude-3.5-haiku-20241022, gemini-1.5-pro-latest</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>0.75x</TableCell>
-          <TableCell>gpt-3.5-turbo, claude-3-haiku, gemini-1.5-flash-latest, caramelldansen-1-plus</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>0.5x</TableCell>
-          <TableCell>codestral, mistral-nemo, gemma-2-9b, gemma-2-27b</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>0.25x</TableCell>
-          <TableCell>mixtral-8x7b-instruct, llama-3.1-70b-instruct, russian models</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>0.15x</TableCell>
-          <TableCell>zukigm-1, llama-3-8b-instruct, llama-3.1-8b-instruct</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>0.1x</TableCell>
-          <TableCell>llama-3.2-1b-instruct</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+    <p>Most up-to-date information can be found now found on <a href="https://docs.zukijourney.com/models" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">the Models page</a>!</p>
   </AccordionContent>
 </AccordionItem>
 
 <AccordionItem value="static-costs">
   <AccordionTrigger>Static Cost per Model/Endpoint</AccordionTrigger>
   <AccordionContent>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Static Cost (Tokens)</TableHead>
-          <TableHead>Models/Categories</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell>42,000</TableCell>
-          <TableCell>Midjourney</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>7,500</TableCell>
-          <TableCell>flux-1.1-pro-ultra-raw</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>6,000</TableCell>
-          <TableCell>flux-1.1-pro-ultra</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>2,500</TableCell>
-          <TableCell>DALL-E 3, Stable-Diffusion-3-Large, flux-1.1-pro, stable-image-ultra</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>750</TableCell>
-          <TableCell>stable-diffusion-3.5-large-turbo</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>650</TableCell>
-          <TableCell>stable-image-core</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>500</TableCell>
-          <TableCell>Suno music generation, flux-pro</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>250</TableCell>
-          <TableCell>recraft-v3, flux models (standard)</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>200</TableCell>
-          <TableCell>TTS-1, ElevenLabs voice generation</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>100</TableCell>
-          <TableCell>Speechify, Prodia models, Audio processing, Embeddings, Whisper</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>50</TableCell>
-          <TableCell>pollinations</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>10</TableCell>
-          <TableCell>Text translations, Moderations</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+    <p>Most up-to-date information can be found now found on <a href="https://docs.zukijourney.com/models" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">the Models page</a>!</p>
   </AccordionContent>
 </AccordionItem>
                 </Accordion>

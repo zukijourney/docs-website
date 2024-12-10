@@ -17,29 +17,24 @@ interface Model {
   object: string;
   owned_by: string;
   provided_by: string[];
-  type: string;
   endpoint: string;
-  supports_vision?: boolean;
   is_free: boolean;
   early_access: boolean;
   pricing: {
-    credits: string | number;
+    price: string | number;
     multiplier: number;
   };
-  voices?: string;
-  extra?: string;
+  voices?: string[];
 }
 
 interface ModelDetailsProps {
   model: Model;
   isOpen: boolean;
   onClose: () => void;
-  isUnfEndpoint: boolean;
 }
 
 interface ModelCardProps {
   model: Model;
-  isUnfEndpoint: boolean;
   onClick: () => void;
 }
 
@@ -82,20 +77,6 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ filters, onFilterChange }
       className="text-sm"
     >
       Free Models
-    </Button>
-    <Button
-      variant={filters.hasVision ? "secondary" : "outline"}
-      onClick={() => onFilterChange({ ...filters, hasVision: !filters.hasVision })}
-      className="text-sm"
-    >
-      Vision Support
-    </Button>
-    <Button
-      variant={filters.isRoleplay ? "secondary" : "outline"}
-      onClick={() => onFilterChange({ ...filters, isRoleplay: !filters.isRoleplay })}
-      className="text-sm"
-    >
-      Roleplay Ready
     </Button>
   </div>
 );
@@ -148,31 +129,31 @@ const useModelIcon = (model: Model): string => {
         'https://arxiv.org/abs/2105.09750': 'https://avatars.githubusercontent.com/u/45442578?s=200&v=4',
         };
   
-    return providerIcons[model.owned_by] || '/default-model-icon.png';
+    return providerIcons[model.owned_by] || 'https://avatars.githubusercontent.com/u/314135?s=200&v=4';
   };
   
   const getModelType = (type: string): string => {
     const types: Record<string, string> = {
-      'chat.completions': 'Text Generation',
-      'audio.speech': 'Text-to-Speech',
-      'embeddings': 'Embeddings',
-      'images.upscale': 'Image Upscaling',
-      'text.translations': 'Text Translation',
-      'audio.translations': 'Audio Translation',
-      'audio.transcriptions': 'Speech to Text',
-      'images.generations': 'Image Generation',
+      '/v1/chat/completions': 'Text Generation',
+      '/v1/audio/speech': 'Text-to-Speech',
+      '/v1/embeddings': 'Embeddings',
+      '/v1/images/upscale': 'Image Upscaling',
+      '/v1/text/translations': 'Text Translation',
+      '/v1/audio/translations': 'Audio Translation',
+      '/v1/audio/transcriptions': 'Speech to Text',
+      '/v1/images/generations': 'Image Generation',
     };
     return types[type] || type;
   };
   
   const formatPricing = (model: Model): string => {
-    if (typeof model.pricing.credits === 'string' && model.pricing.credits === 'per_token') {
+    if (typeof model.pricing.price === 'string' && model.pricing.price === 'per_token') {
       return `${model.pricing.multiplier}x per token`;
     }
-    return `${model.pricing.credits} credits per request`;
+    return `${model.pricing.price} tokens per request`;
   };
   
-  const ModelDetails: React.FC<ModelDetailsProps> = ({ model, isOpen, onClose, isUnfEndpoint }) => {
+  const ModelDetails: React.FC<ModelDetailsProps> = ({ model, isOpen, onClose }) => {
     const iconUrl = useModelIcon(model);
     
     return (
@@ -192,22 +173,12 @@ const useModelIcon = (model: Model): string => {
               />
               <div className="col-span-3">
                 <p className="text-sm text-muted-foreground">Owner: {model.owned_by}</p>
-                <p className="text-sm text-muted-foreground">Type: {getModelType(model.type)}</p>
+                <p className="text-sm text-muted-foreground">Type: {getModelType(model.endpoint)}</p>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {model.supports_vision ? (
-                    <Badge variant="outline">Vision Support</Badge>
-                  ) : (
-                    <Badge variant="outline" className="bg-muted">No Vision Support</Badge>
-                  )}
-                  {isUnfEndpoint ? (
-                    <Badge variant="outline">Roleplay Ready</Badge>
-                  ) : (
-                    <Badge variant="outline" className="bg-muted">No Roleplay Support</Badge>
-                  )}
                   {model.is_free ? (
                     <Badge variant="outline">Available to Everyone</Badge>
                   ) : (
-                    <Badge variant="outline" className="bg-muted">Restricted Access</Badge>
+                    <Badge variant="outline" className="bg-muted">Donators/Subscribers only!</Badge>
                   )}
                 </div>
               </div>
@@ -223,18 +194,12 @@ const useModelIcon = (model: Model): string => {
                 <p className="text-sm max-h-32 overflow-y-auto">{model.voices}</p>
               </div>
             )}
-            {model.extra && (
-              <div>
-                <h4 className="font-medium">Additional Information</h4>
-                <p className="text-sm">{model.extra}</p>
-              </div>
-            )}
           </div>
         </DialogContent>
       </Dialog>
     );
   };
-  const ModelCard: React.FC<ModelCardProps> = ({ model, isUnfEndpoint, onClick }) => {
+  const ModelCard: React.FC<ModelCardProps> = ({ model, onClick }) => {
     const iconUrl = useModelIcon(model);
   
     return (
@@ -263,18 +228,12 @@ const useModelIcon = (model: Model): string => {
                 {model.is_free && (
                   <Badge variant="secondary">Available to everyone!</Badge>
                 )}
-                {model.supports_vision && (
-                  <Badge variant="secondary">Vision Support</Badge>
-                )}
                 {model.early_access && (
                   <Badge variant="secondary">Early Access</Badge>
                 )}
-                {isUnfEndpoint && (
-                  <Badge variant="outline">Available on unf/chat/completions (RP!)</Badge>
-                )}
               </div>
               <div className="text-sm text-muted-foreground">
-                {getModelType(model.type)}
+                {getModelType(model.endpoint)}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
                 {formatPricing(model)}
@@ -289,7 +248,6 @@ const useModelIcon = (model: Model): string => {
   export default function ModelsPage(): JSX.Element {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [models, setModels] = useState<Model[]>([]);
-    const [unfModels, setUnfModels] = useState<Model[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedModel, setSelectedModel] = useState<Model | null>(null);
@@ -323,7 +281,6 @@ const useModelIcon = (model: Model): string => {
             );
             
             setModels(uniqueModels);
-            setUnfModels(data.unfModels);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to fetch models');
         } finally {
@@ -334,9 +291,6 @@ const useModelIcon = (model: Model): string => {
         fetchModels();
     }, []);
   
-    const isModelInUnf = (modelId: string): boolean => {
-      return unfModels.some(unfModel => unfModel.id === modelId);
-    };
   
     const sortModels = (modelList: Model[]): Model[] => {
       const zukiModels = modelList.filter(model => model.owned_by === 'zukijourney');
@@ -345,12 +299,12 @@ const useModelIcon = (model: Model): string => {
       const sortedOtherModels = [...otherModels].sort((a, b) => {
         switch (sortBy) {
           case 'price-asc':
-            const priceA = typeof a.pricing.credits === 'number' ? a.pricing.credits : a.pricing.multiplier;
-            const priceB = typeof b.pricing.credits === 'number' ? b.pricing.credits : b.pricing.multiplier;
+            const priceA = typeof a.pricing.price === 'number' ? a.pricing.price : a.pricing.multiplier;
+            const priceB = typeof b.pricing.price === 'number' ? b.pricing.price : b.pricing.multiplier;
             return priceA - priceB;
           case 'price-desc':
-            const priceC = typeof a.pricing.credits === 'number' ? a.pricing.credits : a.pricing.multiplier;
-            const priceD = typeof b.pricing.credits === 'number' ? b.pricing.credits : b.pricing.multiplier;
+            const priceC = typeof a.pricing.price === 'number' ? a.pricing.price : a.pricing.multiplier;
+            const priceD = typeof b.pricing.price === 'number' ? b.pricing.price : b.pricing.multiplier;
             return priceD - priceC;
           case 'name-asc':
             return a.id.localeCompare(b.id);
@@ -366,11 +320,9 @@ const useModelIcon = (model: Model): string => {
   
     const filteredModels = models.filter(model => {
       const matchesSearch = model.id.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesType = filterType === 'all' || model.type === filterType;
+      const matchesType = filterType === 'all' || model.endpoint === filterType;
       const matchesFilters = (
-        (!filters.isFree || model.is_free) &&
-        (!filters.hasVision || model.supports_vision) &&
-        (!filters.isRoleplay || isModelInUnf(model.id))
+        (!filters.isFree || model.is_free)
       );
       return matchesSearch && matchesType && matchesFilters;
     });
@@ -440,14 +392,12 @@ const useModelIcon = (model: Model): string => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="chat.completions">Chat Completions</SelectItem>
-                <SelectItem value="images.generations">Image Generation</SelectItem>
-                <SelectItem value="audio.speech">Text to Speech</SelectItem>
-                <SelectItem value="audio.transcriptions">Speech to Text</SelectItem>
-                <SelectItem value="audio.translations">Audio Translation</SelectItem>
-                <SelectItem value="text.translations">Text Translation</SelectItem>
-                <SelectItem value="embeddings">Embeddings</SelectItem>
-                <SelectItem value="images.upscale">Image Upscaling</SelectItem>
+                <SelectItem value="/v1/chat/completions">Chat Completions</SelectItem>
+                <SelectItem value="/v1/images/generations">Image Generation</SelectItem>
+                <SelectItem value="/v1/audio/speech">Text to Speech</SelectItem>
+                <SelectItem value="/v1/text/translations">Text Translation</SelectItem>
+                <SelectItem value="/v1/embeddings">Embeddings</SelectItem>
+                <SelectItem value="/v1/images/upscale">Image Upscaling</SelectItem>
               </SelectContent>
             </Select>
   
@@ -470,7 +420,6 @@ const useModelIcon = (model: Model): string => {
               <ModelCard
                 key={model.id}
                 model={model}
-                isUnfEndpoint={isModelInUnf(model.id)}
                 onClick={() => setSelectedModel(model)}
               />
             ))}
@@ -481,7 +430,6 @@ const useModelIcon = (model: Model): string => {
               model={selectedModel}
               isOpen={!!selectedModel}
               onClose={() => setSelectedModel(null)}
-              isUnfEndpoint={isModelInUnf(selectedModel.id)}
             />
           )}
         </div>
