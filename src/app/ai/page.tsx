@@ -255,21 +255,14 @@ print(response.choices[0].message.content)`}
             <ul className="list-disc list-inside space-y-2">
               <li><strong>Open-Source:</strong> Our codebase is available at <a href="https://github.com/zukijourney/api-oss" className="text-blue-500 hover:underline">zukijourney-api</a></li>
               <li><strong>API Format:</strong> Only OpenAI format supported</li>
-              <li><strong>API Versions:</strong> 
-                <ul className="ml-6 list-circle">
-                  <li><strong>v1:</strong> OpenAI format with built-in moderation</li>
-                  <li><strong>unf:</strong> Lower limits, no moderation</li>
-                </ul>
-              </li>
-              <li><strong>Available Models:</strong> Check <a href="https://api.zukijourney.com/v1/models" className="text-blue-500 hover:underline">v1/models</a> or <a href="https://api.zukijourney.com/unf/models" className="text-blue-500 hover:underline">unf/models</a></li>
+              <li><strong>Available Models:</strong> Check <a href="https://api.zukijourney.com/v1/models" className="text-blue-500 hover:underline">v1/models</a></li>
               <li><strong>Model Ownership:</strong> All models courtesy of their respective owners</li>
             </ul>
           </div>
           <div>
             <h3 className="text-xl font-bold mb-3">Global Rate Limits</h3>
             <ul className="list-disc list-inside space-y-2">
-              <li><strong>/unf/ endpoints:</strong> 4 requests/minute/key/IP</li>
-              <li><strong>/v1/ endpoints:</strong> 12 requests/minute/key/IP</li>
+              <li><strong>/v1/ endpoints:</strong> ~12 requests/minute/key/IP</li>
             </ul>
           </div>
         </div>
