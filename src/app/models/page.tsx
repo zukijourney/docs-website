@@ -131,7 +131,8 @@ const useModelIcon = (model: Model): string => {
         'minimax': 'https://filecdn.minimax.chat/public/969d635c-cab6-45cc-8d61-47c9fe40c81f.png?x-oss-process=image/format,webp',
         'iflytek': 'https://avatars.githubusercontent.com/u/26786495?s=200&v=4',
         'tsinghua': 'https://avatars.githubusercontent.com/u/23359141?s=200&v=4',
-        'moonshot': 'https://avatars.githubusercontent.com/u/129152888?s=200&v=4'
+        'moonshot': 'https://avatars.githubusercontent.com/u/129152888?s=200&v=4',
+        'xai': 'https://avatars.githubusercontent.com/u/50278?s=200&v=4'
         };
   
     return providerIcons[model.owned_by] || 'https://avatars.githubusercontent.com/u/314135?s=200&v=4';

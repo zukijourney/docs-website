@@ -170,28 +170,6 @@ const commandData: Command[] = [
     ],
     category: "ai-video-image"
   },
-  {
-    name: "sdx-v2",
-    usage: "/sdx-v2 [Engine] [Style] [Prompt] [Negative Prompt (Optional)] [Detail Boost (Optional)]",
-    description: "Advanced image generation (Donator-only)",
-    details: [
-      "12 high-quality engine options",
-      "Supports negative prompts and detail boost",
-      "Includes a rating system for generated images"
-    ],
-    category: "ai-video-image"
-  },
-  {
-    name: "sdx-v1",
-    usage: "/sdx-v1 [Engine] [Style] [Prompt] [Negative Prompt (Optional)] [Detail Boost (Optional)]",
-    description: "Free version of advanced image generation",
-    details: [
-      "11 engine options with various specialties",
-      "Similar features to sdx-v2, but with different models",
-      "Available to all users"
-    ],
-    category: "ai-video-image"
-  },
   // AI-powered writing & related features
   {
     name: "check",

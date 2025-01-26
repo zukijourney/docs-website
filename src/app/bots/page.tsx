@@ -64,7 +64,7 @@ export default function Component() {
             <Badge variant="secondary" className="text-sm">Free!</Badge>
             <Badge variant="secondary" className="text-sm">AI-Powered!</Badge>
             <Badge variant="secondary" className="text-sm">Powering over 3000 Servers!</Badge>
-            <Badge variant="secondary" className="text-sm">Supporting over 100,000+ Users!</Badge>
+            <Badge variant="secondary" className="text-sm">Supporting over 120,000+ Users!</Badge>
             <Switch checked={darkMode} onCheckedChange={toggleDarkMode} />
             <Label htmlFor="dark-mode">{darkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}</Label>
           </div>
