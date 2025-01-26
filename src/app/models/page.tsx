@@ -132,7 +132,7 @@ const useModelIcon = (model: Model): string => {
         'iflytek': 'https://avatars.githubusercontent.com/u/26786495?s=200&v=4',
         'tsinghua': 'https://avatars.githubusercontent.com/u/23359141?s=200&v=4',
         'moonshot': 'https://avatars.githubusercontent.com/u/129152888?s=200&v=4',
-        'xai': 'https://avatars.githubusercontent.com/u/50278?s=200&v=4'
+        'xai': 'https://avatars.githubusercontent.com/u/129152888?s=200&v=4'
         };
   
     return providerIcons[model.owned_by] || 'https://avatars.githubusercontent.com/u/314135?s=200&v=4';
@@ -268,7 +268,7 @@ const useModelIcon = (model: Model): string => {
   
     // Add this interface for the API response
     interface ApiResponse {
-        models: Model[];
+        data: Model[];
         unfModels: Model[];
         error?: string;
     }
@@ -278,14 +278,14 @@ const useModelIcon = (model: Model): string => {
         try {
             const response = await fetch('/api/model-list');
             const data = await response.json() as ApiResponse;
-            
+            console.log(data);
             if (!response.ok) throw new Error(data.error || 'Failed to fetch models');
-            
+            console.log(data);
             // Now TypeScript knows these are Model arrays
             const uniqueModels = Array.from(
-            new Map(data.models.map((model: Model) => [model.id, model])).values()
+            new Map(data.data.map((model: Model) => [model.id, model])).values()
             );
-            
+            console.log(uniqueModels);
             setModels(uniqueModels);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to fetch models');
