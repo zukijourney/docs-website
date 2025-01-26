@@ -431,8 +431,7 @@ main();`}
                     <AccordionTrigger>Daily Token Grant</AccordionTrigger>
                     <AccordionContent>
                       <p>Every 24 hours, you are eligible for a token grant if your current token balance is below ~15% of your daily token allowance.</p>
-                      <p> Use the `/daily` command on the Discord to apply.</p>
-                      <p>You can check both of these values anytime on the Discord Server with /lookup.</p>
+                      <p>You can check both of these values anytime on the Discord Server with /user lookup.</p>
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="token-equivalence">
