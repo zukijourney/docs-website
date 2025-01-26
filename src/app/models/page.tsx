@@ -16,10 +16,9 @@ interface Model {
   id: string;
   object: string;
   owned_by: string;
-  provided_by: string[];
   endpoint: string;
   is_free: boolean;
-  early_access: boolean;
+  is_early_access: boolean;
   pricing: {
     price: string | number;
     multiplier: number;
@@ -234,7 +233,7 @@ const useModelIcon = (model: Model): string => {
                 {model.is_free && (
                   <Badge variant="secondary">Available to everyone!</Badge>
                 )}
-                {model.early_access && (
+                {model.is_early_access && (
                   <Badge variant="secondary">Early Access</Badge>
                 )}
               </div>
@@ -277,15 +276,12 @@ const useModelIcon = (model: Model): string => {
         const fetchModels = async (): Promise<void> => {
         try {
             const response = await fetch('/api/model-list');
-            const data = await response.json() as ApiResponse;
-            console.log(data);
+           const data = await response.json() as ApiResponse;
             if (!response.ok) throw new Error(data.error || 'Failed to fetch models');
-            console.log(data);
             // Now TypeScript knows these are Model arrays
             const uniqueModels = Array.from(
-            new Map(data.data.map((model: Model) => [model.id, model])).values()
+               new Map(data.data.map((model: Model) => [model.id, model])).values()
             );
-            console.log(uniqueModels);
             setModels(uniqueModels);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to fetch models');
